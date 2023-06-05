@@ -5,7 +5,7 @@
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-body d-flex align-items-center flex-column">
-                            <img src="{{ asset('storage/' . $tariff['image']) }}" alt="alt">
+                            <img style="width: 100%;" src="{{ asset('storage/' . $tariff['image']) }}" alt="alt">
                             <h5 class="card-title mt-3">{{ $tariff['name'] }}</h5>
                             <p class="card-text">Price: ${{ $tariff['price'] }}</p>
                             <div class="card-descr text-center">{!! $tariff['descr'] !!}</div>

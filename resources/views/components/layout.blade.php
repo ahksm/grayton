@@ -24,7 +24,7 @@
         style="z-index: 2; top: 0px; border-bottom: 1px solid #CCC">
         <div class="container">
             <a class="navbar-brand" href="#">
-                <img style="width: 40px" src="/storage/home/logo.svg" alt="alt" />
+                <img style="width: 40px" src="{{ asset('storage/home/logo.svg') }}" alt="alt" />
             </a>
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav-collapse"
@@ -83,19 +83,20 @@
             <div class="row" style="margin-bottom: 80px; gap: 60px">
                 <div class="col">
                     <a href="/">
-                        <img src="/storage/home/logo.svg" alt="alt" style="width: 40px; margin-bottom: 25px" />
+                        <img src="{{ asset('storage/home/logo.svg') }}" alt="alt"
+                            style="width: 40px; margin-bottom: 25px" />
                     </a>
                     <p style="margin-bottom: 55px">
                         Explore the world with Grayton Travel. Plan your dream vacation with us.
                     </p>
-                    <p>&copy; 2023 Grayton Travel. All rights reserved.</p>
+                    <p id="year"></p>
                 </div>
                 <div class="col">
                     <h5 style="margin-bottom: 20px">
                         Destinations
                     </h5>
                     <ul class="footer-links">
-                        @foreach (Location::take(4) as $location)
+                        @foreach (Location::all()->take(4) as $location)
                             <li>
                                 <a
                                     href="/locations/{{ strtolower($location['country']) }}">{{ ucfirst($location['country']) }}</a>
@@ -104,44 +105,13 @@
                     </ul>
                 </div>
                 <div class="col">
-                    <h5 style="margin-bottom: 20px">
-                        Shop
-                    </h5>
-                    <ul class="footer-links">
-                        <li>
-                            <a href="#">Destination Guides</a>
-                        </li>
-                        <li>
-                            <a href="#">Pictorial</a>
-                        </li>
-                        <li>
-                            <a href="#">Special Offers</a>
-                        </li>
-                        <li>
-                            <a href="#">Delivery</a>
-                        </li>
-                        <li>
-                            <a href="#">FAQs</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col">
-                    <h5 style="margin-bottom: 20px">
-                        Interests
-                    </h5>
-                    <ul class="footer-links">
-                        <li>
-                            <a href="#">Adventure</a>
-                        </li>
-                        <li>
-                            <a href="#">Art</a>
-                        </li>
-                        <li>
-                            <a href="#">Family</a>
-                        </li>
-                        <li>
-                            <a href="#">Food</a>
-                        </li>
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d324.5656112060904!2d69.30410466587887!3d41.245700835260045!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2s!4v1685956179408!5m2!1sen!2s"
+                        width="600" height="200" style="border:0;" allowfullscreen="" loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    <ul class="footer-links mt-3">
+                        <b>41.245776, 69.304169</b>
+                        <p>Kuylyuk-4, Tashkent, Uzbekistan</p>
                     </ul>
                 </div>
             </div>
@@ -232,6 +202,9 @@
                 };
                 xhr.send(new URLSearchParams(new FormData(this)).toString());
             });
+
+            var currentYear = new Date().getFullYear();
+            document.getElementById('year').innerHTML = '© ' + currentYear + ' Grayton Travel. All rights reserved.';
         };
     </script>
 </body>
