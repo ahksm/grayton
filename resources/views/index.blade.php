@@ -3,7 +3,7 @@
         <div class="container"
             style="display: flex; flex-direction: column; justify-content: center; align-items: start; z-index: 1; height: 90vh;">
             <div class="row" style="display: flex; justify-content: space-between; align-items: center;">
-                <img class="col-lg-6" width="500px" src="{{ asset('storage/home/Grayton logo black.png') }}"
+                <img class="col-lg-6" width="500px" src="{{ asset('images/Grayton logo black.png') }}"
                     alt="alt" />
                 <form class="col-lg-6" id="explore-form" method="POST" action="{{ route('explore') }}">
                     @csrf

@@ -24,7 +24,7 @@
         style="z-index: 2; top: 0px; border-bottom: 1px solid #CCC">
         <div class="container">
             <a class="navbar-brand" href="#">
-                <img style="width: 40px" src="{{ asset('storage/home/logo.svg') }}" alt="alt" />
+                <img style="width: 40px" src="{{ asset('images/logo.svg') }}" alt="alt" />
             </a>
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav-collapse"
@@ -83,7 +83,7 @@
             <div class="row" style="margin-bottom: 80px; gap: 60px">
                 <div class="col">
                     <a href="/">
-                        <img src="{{ asset('storage/home/logo.svg') }}" alt="alt"
+                        <img src="{{ asset('images/logo.svg') }}" alt="alt"
                             style="width: 40px; margin-bottom: 25px" />
                     </a>
                     <p style="margin-bottom: 55px">
