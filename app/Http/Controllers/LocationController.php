@@ -12,9 +12,22 @@ class LocationController extends Controller
     {
         $locations = Location::all();
 
-        $location = Location::where('country', $location)->firstOrFail();
+        $foundLocation = Location::whereRaw('LOCATE(?, country) > 0', [$location])->first();
 
-        $tariffs = $location->tariffs;
+        $tariffs = $foundLocation->tariffs;
+
+        $currentLocale = app()->getLocale();
+
+        $tariffs->transform(function ($tariff) use ($currentLocale) {
+            $translation = $tariff->translations->where('locale', $currentLocale)->first();
+
+            if ($translation) {
+                $tariff->name = $translation->namename_translation;
+                $tariff->descr = $translation->descr_translation;
+            }
+
+            return $tariff;
+        });
 
         return view('tariff.index', compact('locations', 'tariffs'));
     }

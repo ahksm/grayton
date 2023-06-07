@@ -17,30 +17,6 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <link rel="stylesheet" href="/css/style.css">
-    <style>
-        .header {
-            min-height: 100vh;
-            background: linear-gradient(rgba(255, 255, 255, 0.5),
-                    rgba(255, 255, 255, 0.5)),
-                url({{ asset('images/O9FG4R0.jpg') }});
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-
-        .about {
-            min-height: 100vh;
-            background-image: url({{ asset('images/london.jpg') }});
-            background-position: 20% 50%;
-            background-repeat: no-repeat;
-        }
-
-        .guides {
-            min-height: 100vh;
-            background-image: url({{ asset('images/guides.png') }});
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-    </style>
 </head>
 
 <body>
@@ -59,39 +35,43 @@
             <div class="collapse navbar-collapse" id="nav-collapse">
                 <ul class="navbar-nav ml-auto align-items-center">
                     <li class="nav-item">
-                        <a class="nav-link" href="/" active>Home</a>
+                        <a class="nav-link" href="/" active>{{ __('website.navbar.home') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#destinations">Destinations</a>
+                        <a class="nav-link" href="/#destinations">{{ __('website.navbar.destinations') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/tariffs">Tariffs</a>
+                        <a class="nav-link" href="/tariffs">{{ __('website.navbar.tariffs') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#about">About</a>
+                        <a class="nav-link" href="/#about">{{ __('website.navbar.about') }}</a>
                     </li>
                     <li class="nav-item dropdown" style="min-width: max-content; margin-left: 35px">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                        <a class="nav-link dropdown-toggle" href="javascript:;" role="button" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-globe"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="#" onclick="changeLang('en')">EN</a>
-                            <a class="dropdown-item" href="#" onclick="changeLang('fr')">FR</a>
-                            <a class="dropdown-item" href="#" onclick="changeLang('es')">ES</a>
+                            <form action="{{ route('language.change') }}" method="POST">
+                                @csrf
+                                <button type="submit" name="locale" value="en" class="dropdown-item">EN</button>
+                                <button type="submit" name="locale" value="ru" class="dropdown-item">RU</button>
+                                <button type="submit" name="locale" value="uz" class="dropdown-item">UZ</button>
+                            </form>
                         </div>
                     </li>
                     <li class="nav-item dropdown" style="min-width: 50px; margin-left: 35px">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
-                            User
+                            {{ __('website.navbar.user') }}
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="#">Profile</a>
+                            {{-- <a class="dropdown-item" href="#">Profile</a> --}}
                             <form id="logout-form" action="/logout" method="POST">
                                 @csrf
+
                                 <a class="dropdown-item" href="#"
-                                    onclick="document.getElementById('logout-form').submit();">Sign Out</a>
+                                    onclick="document.getElementById('logout-form').submit();">{{ __('website.navbar.signout') }}</a>
                             </form>
                         </div>
                     </li>
@@ -111,19 +91,37 @@
                             style="width: 40px; margin-bottom: 25px" />
                     </a>
                     <p style="margin-bottom: 55px">
-                        Explore the world with Grayton Travel. Plan your dream vacation with us.
+                        {{ __('website.footer.descr') }}
                     </p>
                     <p id="year"></p>
                 </div>
                 <div class="col">
                     <h5 style="margin-bottom: 20px">
-                        Destinations
+                        {{ __('website.footer.destinations') }}
                     </h5>
                     <ul class="footer-links">
-                        @foreach (Location::all()->take(4) as $location)
+                        @php
+                            $locations = Location::all()->take(4);
+                            $currentLocale = app()->getLocale();
+                            $locationTranslations = $locations
+                                ->map(function ($location) use ($currentLocale) {
+                                    $translation = collect($location->translations)->firstWhere('locale', $currentLocale);
+                                    return $translation ?? collect($location->translations)->last();
+                                })
+                                ->filter();
+                            
+                        @endphp
+                        @foreach ($locationTranslations as $location)
+                            @php
+                                $country = Location::where('id', $location->location_id)->first();
+                                $slug = '';
+                                foreach (json_decode($country['country']) as $key => $value) {
+                                    $slug = $value;
+                                }
+                            @endphp
                             <li>
                                 <a
-                                    href="/locations/{{ strtolower($location['country']) }}">{{ ucfirst($location['country']) }}</a>
+                                    href="/locations/{{ strtolower($value) }}">{{ ucfirst($location->country_translation) }}</a>
                             </li>
                         @endforeach
                     </ul>
@@ -172,18 +170,14 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
     </script>
     <script>
-        // Update selected location and hidden input value on dropdown item click
-        const dropdownItems = document.querySelectorAll('.dropdown-item');
         const selectedLocation = document.getElementById('selected-location');
         const hiddenLocation = document.getElementById('hidden-location');
 
-        dropdownItems.forEach(item => {
-            item.addEventListener('click', (event) => {
-                event.preventDefault();
-                const location = event.target.dataset.location;
-                selectedLocation.textContent = event.target.textContent;
-                hiddenLocation.value = location;
-            });
+        document.querySelector('.some-dropdown-item').addEventListener('click', (event) => {
+            event.preventDefault();
+            const location = event.target.dataset.location;
+            selectedLocation.textContent = event.target.textContent;
+            hiddenLocation.value = location;
         });
     </script>
     <script src="https://my.click.uz/pay/checkout.js"></script>

@@ -3,6 +3,7 @@
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\TariffController;
+use App\Http\Controllers\TranslationController;
 use App\Models\Location;
 use App\Models\Tariff;
 use Illuminate\Http\Request;
@@ -22,9 +23,20 @@ use Illuminate\Support\Facades\Redirect;
 
 Route::get('/', function () {
     $locations = Location::all();
+    $currentLocale = app()->getLocale();
+    $locationTranslations = $locations->map(function ($location) use ($currentLocale) {
+        $translation = collect($location->translations)->firstWhere('locale', $currentLocale);
+        return $translation ?? collect($location->translations)->last();
+    })->filter();
+
     $featured_tariffs = Tariff::where('featured', 1)->take(4)->get();
-    return view('index', compact('locations', 'featured_tariffs'));
+    $tariffTranslations = $featured_tariffs->map(function ($tariff) use ($currentLocale) {
+        $translation = collect($tariff->translations)->firstWhere('locale', $currentLocale);
+        return $translation ?? collect($tariff->translations)->last();
+    })->filter();
+    return view('index', compact('locations', 'featured_tariffs', 'locationTranslations', 'tariffTranslations'));
 })->name('home');
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -48,3 +60,5 @@ Route::get('/tariffs/{city}', [TariffController::class, 'show'])->name('tarrif')
 
 Route::post('/order', [OrderController::class, 'store'])->middleware('auth');
 Route::patch('/order', [OrderController::class, 'update'])->middleware('auth');
+
+Route::post('/language/change', [TranslationController::class, 'changeLanguage'])->name('language.change');

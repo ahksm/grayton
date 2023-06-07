@@ -11,9 +11,11 @@
 
                         <input type="hidden" name="tariff_id" value="{{ $tariff->id }}">
                         <input type="hidden" name="user_id" value="{{ Auth::id() }}">
-                        <button type="submit" class="input-btn btn" style="border: 1px solid #666; color: #666;">Buy</button>
+                        <button type="submit" class="input-btn btn"
+                            style="border: 1px solid #666; color: #666;">{{ __('website.buy') }}</button>
                     </form>
-                    <h4 class="text-right"><b>Price: ${{ $tariff['price'] }}</b></h4>
+                    <h4 class="text-right"><b>{{ __('website.price') }}: {{ $tariff['price'] }}
+                            {{ __('website.currency') }}</b></h4>
                 </div>
             </div>
         </div>
