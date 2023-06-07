@@ -17,6 +17,30 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .header {
+            min-height: 100vh;
+            background: linear-gradient(rgba(255, 255, 255, 0.5),
+                    rgba(255, 255, 255, 0.5)),
+                url({{ asset('images/O9FG4R0.jpg') }});
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .about {
+            min-height: 100vh;
+            background-image: url({{ asset('images/london.jpg') }});
+            background-position: 20% 50%;
+            background-repeat: no-repeat;
+        }
+
+        .guides {
+            min-height: 100vh;
+            background-image: url({{ asset('images/guides.png') }});
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+    </style>
 </head>
 
 <body>

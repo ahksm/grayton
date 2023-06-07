@@ -16,17 +16,6 @@ h1 {
     font-weight: bold;
 }
 
-.header {
-    min-height: 100vh;
-    background: linear-gradient(
-            rgba(255, 255, 255, 0.5),
-            rgba(255, 255, 255, 0.5)
-        ),
-        url(../storage/home/O9FG4R0.jpg);
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
 .nav-link {
     font-family: IR;
     color: #b8becd;
@@ -79,13 +68,6 @@ h1 {
     transform: translateY(-50%);
 }
 
-.about {
-    min-height: 100vh;
-    background-image: url(../storage/home/london.jpg);
-    background-position: 20% 50%;
-    background-repeat: no-repeat;
-}
-
 .about .container {
     width: 100vw;
     height: 100vh;
@@ -93,13 +75,6 @@ h1 {
     flex-direction: column;
     align-items: flex-end;
     justify-content: center;
-}
-
-.guides {
-    min-height: 100vh;
-    background-image: url(../storage/home/guides.png);
-    background-position: center;
-    background-repeat: no-repeat;
 }
 
 .guides .container {
