@@ -37,11 +37,6 @@ Route::get('/', function () {
     return view('index', compact('locations', 'featured_tariffs', 'locationTranslations', 'tariffTranslations'));
 })->name('home');
 
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
-
 require __DIR__ . '/auth.php';
 
 Route::group(['prefix' => 'admin'], function () {
@@ -50,7 +45,7 @@ Route::group(['prefix' => 'admin'], function () {
 
 Route::post('/explore', function (Request $request) {
     $location = $request->input('location');
-    return Redirect::route('location', ['location' => strtolower($location)]);
+    return empty($location) ? Redirect::route('home') : Redirect::route('location', ['location' => strtolower($location)]);
 })->name('explore');
 
 Route::get('/location/{location}', [LocationController::class, 'index'])->name('location');

@@ -22,6 +22,7 @@ class LocationController extends Controller
             $translation = $tariff->translations->where('locale', $currentLocale)->first();
 
             if ($translation) {
+                $tariff->original_name = $tariff->name;
                 $tariff->name = $translation->namename_translation;
                 $tariff->descr = $translation->descr_translation;
             }

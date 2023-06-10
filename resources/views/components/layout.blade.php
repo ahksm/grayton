@@ -20,10 +20,9 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light w-100 position-absolute"
-        style="z-index: 2; top: 0px; border-bottom: 1px solid #CCC">
+    <nav class="navbar navbar-expand-lg navbar-light w-100" style="z-index: 2; border-bottom: 1px solid #CCC;">
         <div class="container">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand d-block" href="#">
                 <img style="width: 40px" src="{{ asset('images/logo.svg') }}" alt="alt" />
             </a>
 
@@ -60,21 +59,29 @@
                             </form>
                         </div>
                     </li>
-                    <li class="nav-item dropdown" style="min-width: 50px; margin-left: 35px">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                            {{ __('website.navbar.user') }}
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            {{-- <a class="dropdown-item" href="#">Profile</a> --}}
-                            <form id="logout-form" action="/logout" method="POST">
-                                @csrf
+                    @auth
+                        <li class="nav-item dropdown" style="min-width: 50px; margin-left: 35px">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                {{ Auth::user()->name }}
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <form id="logout-form" action="/logout" method="POST">
+                                    @csrf
+                                    <a class="dropdown-item" href="#"
+                                        onclick="document.getElementById('logout-form').submit();">{{ __('website.navbar.signout') }}</a>
+                                </form>
+                            </div>
+                        </li>
+                    @else
+                        <li class="nav-item mr-2">
+                            <a class="nav-link btn" style="border: 1px solid #666; color: #666;" href="{{ route('login') }}">{{ __('website.navbar.login') }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link btn" style="border: 1px solid #666; color: #666;" href="{{ route('register') }}">{{ __('website.navbar.register') }}</a>
+                        </li>
+                    @endauth
 
-                                <a class="dropdown-item" href="#"
-                                    onclick="document.getElementById('logout-form').submit();">{{ __('website.navbar.signout') }}</a>
-                            </form>
-                        </div>
-                    </li>
                 </ul>
             </div>
         </div>

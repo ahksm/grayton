@@ -4,8 +4,7 @@
                 url({{ asset('images/O9FG4R0.jpg') }});min-height: 100vh;
                 background-position: center;
                 background-repeat: no-repeat;">
-        <div class="container"
-            style="display: flex; flex-direction: column; justify-content: center; align-items: start; z-index: 1; height: 90vh;">
+        <div class="container" style="z-index: 1;">
             <div class="row" style="display: flex; justify-content: space-between; align-items: center;">
                 <img class="col-lg-6" width="500px" src="{{ asset('images/Grayton logo black.png') }}" alt="alt" />
                 <form class="col-lg-6" id="explore-form" method="POST" action="{{ route('explore') }}">
@@ -49,12 +48,16 @@
     <div class="destinations" id="destinations">
         <div class="container">
             <div class="row align-items-center justify-content-between">
-                <h1 class="font-size-36" style="line-height: 50px">
+                <h1 class="destinations-heading" style="line-height: 50px">
                     {{ __('website.destinations.featured') }}
                 </h1>
                 <a href="/tariffs" class="view-all">
                     {{ __('website.destinations.view') }}
-                    <i class="bi bi-chevron-right"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-chevron-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
+                    </svg>
                 </a>
             </div>
             <div class="row">
@@ -63,7 +66,7 @@
                         $city = $featured_tariffs->where('id', $tariff->tariff_id)->first();
                         $location = $locationTranslations->where('location_id', $city->location_id)->first();
                     @endphp
-                    <div class="col-3 city"
+                    <div class="col-md-3 city"
                         style="background-image: url({{ asset('storage/' . str_replace('\\', '/', $city['image'])) }}); filter: grayscale(100%);">
                         <div class="info">
                             <h3>{{ ucfirst($tariff->name_translation) }}</h3>
@@ -83,7 +86,7 @@
         <div class="container">
             <div class="row" style="flex-direction: column">
                 <div class="col">
-                    <h1 class="font-size-36" style="line-height: 50px; margin-bottom: 20px; max-width: 400px;">
+                    <h1 style="line-height: 50px; margin-bottom: 20px; max-width: 400px;">
                         {{ __('website.about.heading') }}</h1>
                     <p style="width: 450px; font-size: 17px; line-height: 30px; color: #7d7987; font-family: ML;">
                         {{ __('website.about.text') }}

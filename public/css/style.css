@@ -16,6 +16,12 @@ h1 {
     font-weight: bold;
 }
 
+@media (max-width: 992px) {
+    nav {
+        background-color: white;
+    }
+}
+
 .nav-link {
     font-family: IR;
     color: #b8becd;
@@ -68,6 +74,17 @@ h1 {
     transform: translateY(-50%);
 }
 
+@media (max-width: 992px) {
+    .about {
+        background-position: center !important;
+    }
+
+    .about .container {
+        flex-direction: row !important;
+        align-items: start !important;
+    }
+}
+
 .about .container {
     width: 100vw;
     height: 100vh;
@@ -79,6 +96,12 @@ h1 {
 
 .destinations {
     min-height: 100vh;
+}
+
+@media (max-width: 992px) {
+    .destinations-heading {
+        font-size: 2rem;
+    }
 }
 
 .destinations .container {

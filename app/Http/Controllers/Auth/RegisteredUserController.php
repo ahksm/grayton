@@ -35,12 +35,29 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'surname' => ['required', 'string', 'max:255'],
+            'phone' => ['required', 'string', 'max:255'],
+            'address' => ['required'],
+            'email' => ['required', 'string', 'email', 'max:255'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        $existingUser = User::where('email', $request->email)->first();
+
+        if ($existingUser) {
+            if (url()->previous() === route('register')) {
+                return response()->json(['error' => 'These credentials already exist.'], 409);
+            }
+
+            Auth::login($existingUser);
+            return response()->json(['user_id' => Auth::id()]);
+        }
+
         $user = User::create([
             'name' => $request->name,
+            'surname' => $request->surname,
+            'phone' => $request->phone,
+            'address' => $request->address,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
@@ -49,6 +66,8 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(RouteServiceProvider::HOME);
+        return url()->previous() === route('register')
+            ? redirect(RouteServiceProvider::HOME)
+            : response()->json(['new_user_id' => $user->id, 'user_id' => Auth::id()]);
     }
 }
