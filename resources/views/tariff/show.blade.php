@@ -3,7 +3,8 @@
         <div class="row justify-content-between">
             <img class="col-lg-4" src="{{ asset('storage/' . $tariff['image']) }}" alt="alt">
             <div class="col-lg-6">
-                <h2 class="text-right"><b>{{ $tariff['name'] . ', ' . $tariff->location->country }}</b></h2>
+                <h2 class="text-right"><b>{{ $tariff['name'] . ', ' . $tariff->location[0]->country_translation }}</b>
+                </h2>
                 <div class="text-justify my-5">{!! $tariff['descr'] !!}</div>
                 <div class="d-flex justify-content-between align-items-center">
                     @auth
@@ -31,15 +32,16 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body text-center">
+                    <img src="{{ asset('images/click.png') }}" alt="click" width="80%" height="350px">
                     <form action="/order" method="POST" class="order-submit">
                         @csrf
                         <input type="hidden" name="tariff_id" value="{{ $tariff->id }}">
                         @auth
                             <input type="hidden" name="user_id" value="{{ Auth::id() }}">
                         @endauth
-                        <button type="submit"
-                            class="payment-btn btn" style="border: 1px solid #666; color: #666;">{{ __('website.payment_button') }}</button>
+                        <button type="submit" class="payment-btn btn btn-primary"
+                            style="border: 1px solid #00f; color: #fff;">{{ __('website.payment_button') }}</button>
                     </form>
                 </div>
             </div>
@@ -58,65 +60,23 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="/register" method="POST" class="login-or-register-submit d-flex flex-column" style="gap: 30px;">
-                        @csrf
-                        <input type="hidden" name="tariff_id" value="{{ $tariff->id }}">
-                        @guest
-                            <input class="btn text-left" style="border: 1px solid #666; color: #666;" type="text" name="name" placeholder="{{ __('website.register.name') }}" required>
-                            <input class="btn text-left" style="border: 1px solid #666; color: #666;" type="text" name="surname" placeholder="{{ __('website.register.surname') }}" required>
-                            <input class="btn text-left" style="border: 1px solid #666; color: #666;" type="email" name="email" placeholder="{{ __('website.register.email') }}" required>
-                            <input class="btn text-left" style="border: 1px solid #666; color: #666;" type="number" name="phone" placeholder="{{ __('website.register.phone') }}" required>
-                            <input class="btn text-left" style="border: 1px solid #666; color: #666;" type="text" name="address" placeholder="{{ __('website.register.address') }}" required>
-                            <input class="btn text-left" style="border: 1px solid #666; color: #666;" type="password" name="password" placeholder="{{ __('website.register.password') }}" required>
-                            <input class="btn text-left" style="border: 1px solid #666; color: #666;" type="password" name="password_confirmation"
-                                placeholder="{{ __('website.register.password_confirmation') }}" required>
-                        @endguest
-                        <button type="submit"
-                            class="login-or-register-btn btn" style="border: 1px solid #666; color: #666;">{{ __('website.register.button') }}</button>
-                    </form>
+                    {!! __('website.registerOrLogin') !!}
                 </div>
             </div>
         </div>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    </script>
     <script>
-        // Handle successful form submission
-        $('.order-submit').on('submit', function(event) {
-            event.preventDefault();
-            // Perform form submission using AJAX
-            $.ajax({
-                url: $(this).attr('action'),
-                type: $(this).attr('method'),
-                data: $(this).serialize(),
-                success: function(response) {
-                    // Show the payment modal after successful submission
+        $(document).ready(function() {
+            @if (Auth::check())
+                var urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.has('paymentModal')) {
                     $('#paymentModal').modal('show');
-                },
-                error: function(xhr) {
-                    // Handle error if the form submission fails
-                    console.log(xhr.responseText);
                 }
-            });
-        });
-
-        // Handle login or register form submission
-        $('.login-or-register-submit').on('submit', function(event) {
-            event.preventDefault();
-            // Perform form submission using AJAX
-            $.ajax({
-                url: $(this).attr('action'),
-                type: $(this).attr('method'),
-                data: $(this).serialize(),
-                success: function(response) {
-                    // Show the payment modal after successful login or registration
-                    $('#loginOrRegisterModal').modal('hide');
-                    $('#paymentModal').modal('show');
-                },
-                error: function(xhr) {
-                    // Handle error if the form submission fails
-                    console.log(xhr.responseText);
-                }
-            });
+            @endif
         });
     </script>
 </x-layout>

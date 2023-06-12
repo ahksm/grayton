@@ -25,9 +25,10 @@ Route::get('/', function () {
     $locations = Location::all();
     $currentLocale = app()->getLocale();
     $locationTranslations = $locations->map(function ($location) use ($currentLocale) {
-        $translation = collect($location->translations)->firstWhere('locale', $currentLocale);
-        return $translation ?? collect($location->translations)->last();
+        return collect($location->translations)->firstWhere('locale', $currentLocale) ?? collect($location->translations)->last();
     })->filter();
+
+    // dd($locationTranslations->toArray());
 
     $featured_tariffs = Tariff::where('featured', 1)->take(4)->get();
     $tariffTranslations = $featured_tariffs->map(function ($tariff) use ($currentLocale) {

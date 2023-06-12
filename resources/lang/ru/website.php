@@ -50,4 +50,5 @@ return [
     ],
     'payment' => 'Оплата',
     'payment_button' => 'Оплатить',
+    'registerOrLogin' => 'Чтобы оплатить, <a href="/login">войдите</a> в свою учётную запись или <a href="/register">зарегистрируйтесь</a>',
 ];

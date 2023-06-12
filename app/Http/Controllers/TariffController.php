@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Location;
+use App\Models\LocationTranslation;
 use App\Models\Tariff;
 use Illuminate\Http\Request;
 
@@ -38,22 +39,15 @@ class TariffController extends Controller
         $currentLocale = app()->getLocale();
 
         $translation = $tariff->translations->where('locale', $currentLocale)->first();
-        foreach ($tariff->location->translations as $location) {
-            if ($location['locale'] == $currentLocale) {
-                $slug = $location['country_translation'];
-            } else {
-                $slug = $tariff->location->country;
-                foreach (json_decode($slug) as $key => $value) {
-                    $slug = $value;
-                }
-            }
-        }
 
         if ($translation) {
             $tariff->name = $translation->name_translation;
             $tariff->descr = $translation->descr_translation;
         }
-        $tariff->location->country = $slug;
+
+        $tariff->location = LocationTranslation::where('location_id', $tariff->location_id)->where('locale', $currentLocale)->get();
+
+        session()->put('url.intended', url()->current() . '?paymentModal');
 
         return view('tariff.show', compact('tariff'));
     }

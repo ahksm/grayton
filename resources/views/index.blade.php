@@ -23,13 +23,9 @@
                                 @foreach ($locationTranslations as $location)
                                     @php
                                         $country = $locations->where('id', $location->location_id)->pluck('country');
-                                        $slug = '';
-                                        foreach (json_decode($country[0]) as $key => $value) {
-                                            $slug = $value;
-                                        }
                                     @endphp
                                     <a class="some-dropdown-item dropdown-item" href="#"
-                                        data-location="{{ $slug }}">{{ ucfirst($location->country_translation) }}</a>
+                                        data-location="{{ $country[0] }}">{{ ucfirst($location->country_translation) }}</a>
                                 @endforeach
                             </div>
                         </div>

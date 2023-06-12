@@ -38,20 +38,9 @@ class RegisteredUserController extends Controller
             'surname' => ['required', 'string', 'max:255'],
             'phone' => ['required', 'string', 'max:255'],
             'address' => ['required'],
-            'email' => ['required', 'string', 'email', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
-
-        $existingUser = User::where('email', $request->email)->first();
-
-        if ($existingUser) {
-            if (url()->previous() === route('register')) {
-                return response()->json(['error' => 'These credentials already exist.'], 409);
-            }
-
-            Auth::login($existingUser);
-            return response()->json(['user_id' => Auth::id()]);
-        }
 
         $user = User::create([
             'name' => $request->name,
@@ -66,8 +55,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return url()->previous() === route('register')
-            ? redirect(RouteServiceProvider::HOME)
-            : response()->json(['new_user_id' => $user->id, 'user_id' => Auth::id()]);
+        return redirect()->to(session()->pull('url.intended', RouteServiceProvider::HOME));
     }
 }

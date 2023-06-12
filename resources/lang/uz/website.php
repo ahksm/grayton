@@ -49,4 +49,5 @@ return [
     ],
     'payment' => 'To\'lov',
     'payment_button' => 'To\'lovni amalga oshirish',
+    'registerOrLogin' => 'To\'lovni amalga oshirish uchun tizimga <a href="/login">kiring</a> yoki ro\'yxattan <a href="/register">o\'ting</a>',
 ];

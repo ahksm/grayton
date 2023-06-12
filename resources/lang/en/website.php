@@ -50,4 +50,5 @@ return [
     ],
     'payment' => 'Payment',
     'payment_button' => 'Pay',
+    'registerOrLogin' => 'To make a payment, <a href="/login">log in</a> or <a href="/register">register</a>',
 ];

@@ -30,6 +30,7 @@ class OrderController extends Controller
         $status = $request->input('status');
 
         $order = Order::find($order_id);
+
         $order->status = $status;
         $order->save();
 

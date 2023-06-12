@@ -9,6 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Grayton Travel</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -75,10 +76,12 @@
                         </li>
                     @else
                         <li class="nav-item mr-2">
-                            <a class="nav-link btn" style="border: 1px solid #666; color: #666;" href="{{ route('login') }}">{{ __('website.navbar.login') }}</a>
+                            <a class="nav-link btn" style="border: 1px solid #666; color: #666;"
+                                href="{{ route('login') }}">{{ __('website.navbar.login') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link btn" style="border: 1px solid #666; color: #666;" href="{{ route('register') }}">{{ __('website.navbar.register') }}</a>
+                            <a class="nav-link btn" style="border: 1px solid #666; color: #666;"
+                                href="{{ route('register') }}">{{ __('website.navbar.register') }}</a>
                         </li>
                     @endauth
 
@@ -108,27 +111,21 @@
                     </h5>
                     <ul class="footer-links">
                         @php
-                            $locations = Location::all()->take(4);
+                            $locations = Location::all();
                             $currentLocale = app()->getLocale();
                             $locationTranslations = $locations
                                 ->map(function ($location) use ($currentLocale) {
-                                    $translation = collect($location->translations)->firstWhere('locale', $currentLocale);
-                                    return $translation ?? collect($location->translations)->last();
+                                    return collect($location->translations)->firstWhere('locale', $currentLocale) ?? collect($location->translations)->last();
                                 })
                                 ->filter();
-                            
                         @endphp
                         @foreach ($locationTranslations as $location)
                             @php
                                 $country = Location::where('id', $location->location_id)->first();
-                                $slug = '';
-                                foreach (json_decode($country['country']) as $key => $value) {
-                                    $slug = $value;
-                                }
                             @endphp
                             <li>
                                 <a
-                                    href="/locations/{{ strtolower($value) }}">{{ ucfirst($location->country_translation) }}</a>
+                                    href="/location/{{ strtolower($country->country) }}">{{ ucfirst($location->country_translation) }}</a>
                             </li>
                         @endforeach
                     </ul>
@@ -198,30 +195,23 @@
                 xhr.onload = function() {
                     if (xhr.status === 200) {
                         var response = JSON.parse(xhr.responseText);
-                        var order_id = response.order_id;
-                        var tariff_price = response.tariff_price;
                         createPaymentRequest({
                             service_id: 27913,
                             merchant_id: 20333,
-                            amount: tariff_price,
-                            transaction_param: order_id,
+                            amount: response.tariff_price,
+                            transaction_param: response.order_id,
                             merchant_user_id: "32551",
                             card_type: "uzcard",
                         }, function(data) {
-                            console.log("closed", data.status);
-                            // Send another request to update the order status
                             var xhr = new XMLHttpRequest();
-                            xhr.open('PATCH', '/order');
+                            xhr.open('POST', '/order');
                             xhr.setRequestHeader('Content-Type',
                                 'application/x-www-form-urlencoded');
-                            xhr.onload = function() {
-                                if (xhr.status === 200) {
-                                    // Handle successful update
-                                } else {
-                                    // Handle error
-                                }
-                            };
-                            xhr.send(`order_id=${order_id}&status=${data.status}`);
+                            xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector(
+                                'meta[name="csrf-token"]').getAttribute('content'));
+                            var requestBody = `_method=PATCH&order_id=${response.order_id}`;
+                            if (data.status != null) requestBody += `&status=${data.status}`;
+                            xhr.send(requestBody);
                         });
                     }
                 };
