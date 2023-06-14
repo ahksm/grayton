@@ -578,6 +578,7 @@ class ComposerStaticInitdb19dee9f8caf8cffc5dc9a65d1c9f7d
         'App\\Http\\Middleware\\TrustProxies' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustProxies.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
         'App\\Http\\Requests\\Auth\\LoginRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Auth/LoginRequest.php',
+        'App\\Models\\Booking' => __DIR__ . '/../..' . '/app/Models/Booking.php',
         'App\\Models\\Location' => __DIR__ . '/../..' . '/app/Models/Location.php',
         'App\\Models\\LocationTranslation' => __DIR__ . '/../..' . '/app/Models/LocationTranslation.php',
         'App\\Models\\Order' => __DIR__ . '/../..' . '/app/Models/Order.php',

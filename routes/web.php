@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\TariffController;
@@ -57,4 +58,10 @@ Route::get('/tariffs/{city}', [TariffController::class, 'show'])->name('tarrif')
 Route::post('/order', [OrderController::class, 'store'])->middleware('auth');
 Route::patch('/order', [OrderController::class, 'update'])->middleware('auth');
 
+Route::post('/booking', [BookingController::class, 'store'])->middleware('auth');
+
 Route::post('/language/change', [TranslationController::class, 'changeLanguage'])->name('language.change');
+
+Route::post('/set-url-intended', function (\Illuminate\Http\Request $request) {
+    session()->put('url.intended', $request->input('url'));
+})->name('setUrlIntended');

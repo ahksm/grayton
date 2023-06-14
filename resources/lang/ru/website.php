@@ -33,6 +33,7 @@ return [
     'price' => 'Цена',
     'currency' => 'сум',
     'buy' => 'Купить',
+    'book' => 'Забронировать',
     'register' => [
         'checkout' => 'Оформить Заказ',
         'name' => 'Имя',
@@ -50,5 +51,8 @@ return [
     ],
     'payment' => 'Оплата',
     'payment_button' => 'Оплатить',
+    'booking' => 'Бронирование',
+    'booking_text' => 'Вы уверены, что хотите забронировать поездку?',
+    'booking_button' => 'Забронировать',
     'registerOrLogin' => 'Чтобы оплатить, <a href="/login">войдите</a> в свою учётную запись или <a href="/register">зарегистрируйтесь</a>',
 ];

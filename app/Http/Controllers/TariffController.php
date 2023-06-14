@@ -47,8 +47,6 @@ class TariffController extends Controller
 
         $tariff->location = LocationTranslation::where('location_id', $tariff->location_id)->where('locale', $currentLocale)->get();
 
-        session()->put('url.intended', url()->current() . '?paymentModal');
-
         return view('tariff.show', compact('tariff'));
     }
 }

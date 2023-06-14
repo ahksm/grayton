@@ -23,7 +23,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light w-100" style="z-index: 2; border-bottom: 1px solid #CCC;">
         <div class="container">
-            <a class="navbar-brand d-block" href="#">
+            <a class="navbar-brand d-block" href="/">
                 <img style="width: 40px" src="{{ asset('images/logo.svg') }}" alt="alt" />
             </a>
 
@@ -132,12 +132,12 @@
                 </div>
                 <div class="col">
                     <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d324.5656112060904!2d69.30410466587887!3d41.245700835260045!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2s!4v1685956179408!5m2!1sen!2s"
+                        src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d587.8910782882724!2d69.29024825058767!3d41.24870141898152!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1z0JrRg9GI0LrRg9GA0LPQvtC9IDQt0Lkg0L_RgNC-0LXQt9C0LCAxMDc!5e0!3m2!1sru!2s!4v1686675835189!5m2!1sru!2s"
                         width="600" height="200" style="border:0;" allowfullscreen="" loading="lazy"
                         referrerpolicy="no-referrer-when-downgrade"></iframe>
                     <ul class="footer-links mt-3">
-                        <b>41.245776, 69.304169</b>
-                        <p>Kuylyuk-4, Tashkent, Uzbekistan</p>
+                        <b>41.248738, 69.290644</b>
+                        <p>Sergeli, Tashkent, Uzbekistan</p>
                     </ul>
                 </div>
             </div>
@@ -177,11 +177,14 @@
         const selectedLocation = document.getElementById('selected-location');
         const hiddenLocation = document.getElementById('hidden-location');
 
-        document.querySelector('.some-dropdown-item').addEventListener('click', (event) => {
-            event.preventDefault();
-            const location = event.target.dataset.location;
-            selectedLocation.textContent = event.target.textContent;
-            hiddenLocation.value = location;
+        document.querySelectorAll('.some-dropdown-item').forEach(element => {
+            element.addEventListener('click', (event) => {
+                event.preventDefault();
+                const location = event.target.dataset.location;
+                selectedLocation.textContent = event.target.textContent;
+                console.log(location);
+                hiddenLocation.value = location;
+            });
         });
     </script>
     <script src="https://my.click.uz/pay/checkout.js"></script>
@@ -213,6 +216,33 @@
                             if (data.status != null) requestBody += `&status=${data.status}`;
                             xhr.send(requestBody);
                         });
+                    }
+                };
+                xhr.send(new URLSearchParams(new FormData(this)).toString());
+            });
+
+            document.querySelector('form.booking-submit').addEventListener('submit', function(event) {
+                event.preventDefault();
+                var xhr = new XMLHttpRequest();
+                xhr.open(this.method, this.action);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]')
+                    .getAttribute('content'));
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        document.querySelector('#bookingModalBody').innerHTML = xhr.status === 200 ?
+                            `<div class="d-flex flex-column" style="gap: 50px">
+                                <p>Booking was processed successfully, we will call you back later.</p>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">OK</span>
+                                </button>
+                            </div>` :
+                            `<div class="d-flex flex-column" style="gap: 50px">
+                                <p>Something went wrong!</p>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">OK</span>
+                                </button>
+                            </div>`;
                     }
                 };
                 xhr.send(new URLSearchParams(new FormData(this)).toString());

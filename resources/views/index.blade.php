@@ -24,8 +24,8 @@
                                     @php
                                         $country = $locations->where('id', $location->location_id)->pluck('country');
                                     @endphp
-                                    <a class="some-dropdown-item dropdown-item" href="#"
-                                        data-location="{{ $country[0] }}">{{ ucfirst($location->country_translation) }}</a>
+                                    <a class="some-dropdown-item dropdown-item" href="javascript:;"
+                                        data-location="{{ strtolower($country[0]) }}">{{ ucfirst($location->country_translation) }}</a>
                                 @endforeach
                             </div>
                         </div>

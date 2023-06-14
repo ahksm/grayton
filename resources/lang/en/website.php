@@ -33,6 +33,7 @@ return [
     'price' => 'Price',
     'currency' => 'sum',
     'buy' => 'Buy',
+    'book' => 'Book',
     'register' => [
         'checkout' => 'Order Checkout',
         'name' => 'Name',
@@ -50,5 +51,8 @@ return [
     ],
     'payment' => 'Payment',
     'payment_button' => 'Pay',
+    'booking' => 'Booking',
+    'booking_text' => 'Are you sure you want to book a trip?',
+    'booking_button' => 'Book',
     'registerOrLogin' => 'To make a payment, <a href="/login">log in</a> or <a href="/register">register</a>',
 ];

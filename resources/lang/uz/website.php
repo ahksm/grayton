@@ -33,6 +33,7 @@ return [
     'price' => 'Narxi',
     'currency' => 'so\'m',
     'buy' => 'Harid qilish',
+    'book' => 'Bron Qilish',
     'register' => [
         'checkout' => 'Buyurtma Berish',
         'name' => 'Ism',
@@ -49,5 +50,8 @@ return [
     ],
     'payment' => 'To\'lov',
     'payment_button' => 'To\'lovni amalga oshirish',
+    'booking' => 'Bron Qilish',
+    'booking_text' => 'Haqiqatan ham sayohatni bron qilmoqchimisiz?',
+    'booking_button' => 'Bron Qilish',
     'registerOrLogin' => 'To\'lovni amalga oshirish uchun tizimga <a href="/login">kiring</a> yoki ro\'yxattan <a href="/register">o\'ting</a>',
 ];
